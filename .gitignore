@@ -1,0 +1,39 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+web_env/
+.venv/
+venv/
+
+# Secrets
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+*.key
+*.pem
+
+# Runtime / development artifacts
+guardrail_audit_log.jsonl
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Development copies
+app-bk.py
+app_STABLE_BEFORE_UI_UPGRADE_*.py
+app_UI_DEV*.py
+
+# Do not publish alternate GraphRAG bundles
+graphrag_project/
+
+# Keep production deployment bundle
+!graphrag_project_online/

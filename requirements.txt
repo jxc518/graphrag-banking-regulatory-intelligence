@@ -1,0 +1,4 @@
+streamlit
+pandas
+pyarrow
+graphrag==3.1.1
