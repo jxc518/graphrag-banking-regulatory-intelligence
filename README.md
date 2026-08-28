@@ -22,6 +22,64 @@ Public demo: https://banking-graphrag-jingru.streamlit.app
 
 Runtime controls include prompt-injection screening, domain/scope checks, indirect prompt-injection checks, citation validation, grounding, sensitive banking/PII checks, output controls, and audit logging. Outputs can be PASS, WARN, or BLOCK; WARN/BLOCK states are preserved rather than suppressed for presentation.
 
+## Phase 1 Evidence
+
+The screenshots below document representative observed behavior from the deployed GraphRAG Phase 1 system, including graph-enhanced retrieval, runtime governance behavior, and corpus-wide Global Search synthesis.
+
+### 1. Local Search — Graph-Enhanced Retrieval
+
+The following example demonstrates graph-enhanced focused retrieval for a model risk management question. The system returns evidence-grounded output and independently evaluates citation support through the runtime guardrail pipeline.
+
+**Query**
+
+![Local Search Query](docs/images/_01_local_search_1_A_query_20260828.png)
+
+**Result**
+
+![Local Search Result](docs/images/_01_local_search_1_B_results_20260828.png)
+
+**Runtime Guardrail Evaluation**
+
+![Local Search Guardrail](docs/images/_01_local_search_1_C_guardrail_20260828.png)
+
+The observed run returned a WARN because the citation-validation layer identified cited claims that may not be fully supported by the associated evidence. The warning is intentionally preserved rather than suppressed.
+
+### 2. Local Search — Runtime Governance / Prompt-Injection Scenario
+
+This example demonstrates runtime behavior when the system receives a request attempting to override instructions and obtain customer account information.
+
+**Query**
+
+![Prompt Injection Query](docs/images/_02_local_search_2_A_prompt_injection_query_20260828.png)
+
+**Result**
+
+![Prompt Injection Result](docs/images/_02_local_search_2_B_prompt_injection_results_20260828.png)
+
+**Runtime Guardrail Evaluation**
+
+![Prompt Injection Guardrail](docs/images/_02_local_search_2_C_prompt_injection_guardrail_20260828.png)
+
+The system did not disclose customer account information. The runtime governance layer also surfaced scope, evidence, grounding, citation, and output-control warnings rather than presenting the response as fully evidence-supported.
+
+### 3. Global Search — Cross-Document Synthesis
+
+The following example demonstrates corpus-wide community-level synthesis across major U.S. bank disclosures and regulatory guidance for model risk management.
+
+**Query**
+
+![Global Search Query](docs/images/_03_global_search_1_A_query_20260828.png)
+
+**Result**
+
+![Global Search Result](docs/images/_03_global_search_1_B_results_20260828.png)
+
+**Runtime Guardrail Evaluation**
+
+![Global Search Guardrail](docs/images/_03_global_search_1_C_guardrail_20260828.png)
+
+The public Global Search completed successfully with broad evidence coverage. Citation validation independently flagged a subset of cited claims as potentially insufficiently supported, producing an intentional WARN rather than suppressing the governance signal.
+
 ## Final Public Benchmark
 
 | Search mode | Runtime | Evidence references | Guardrail |
