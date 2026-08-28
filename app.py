@@ -963,23 +963,24 @@ if sidebar_view == "Overview":
                     '<span class="landing-metric">0.0 sec</span>'
                     '<span class="landing-metric">0 evidence refs</span>'
                 '</div>'
-            '</div>'
+            '</div>' 
             '<div class="landing-card">'
                 '<div class="landing-card-kicker">Cross-Document Synthesis</div>'
                 '<div class="landing-card-title">Model-risk principles across regulatory guidance</div>'
                 '<div class="landing-card-copy">'
                     'Global Search completed a community-level synthesis with extensive evidence. '
-                    'The measured latency also exposed a production optimization requirement.'
+                    'Performance tuning reduced the measured runtime while preserving broad evidence coverage.'
                 '</div>'
                 '<div class="landing-metric-row">'
                     '<span class="landing-metric warn">WARN</span>'
                     '<span class="landing-metric">Global Search</span>'
-                    '<span class="landing-metric">3113.7 sec</span>'
-                    '<span class="landing-metric">154 evidence refs</span>'
-                '</div>'
+                    '<span class="landing-metric">527.7 sec</span>'
+                    '<span class="landing-metric">180 evidence refs</span>'
+                    '</div>'
             '</div>'
         '</div>'
     )
+    
     st.markdown(featured_html, unsafe_allow_html=True)
 
     architecture_html = (
@@ -1050,7 +1051,7 @@ if sidebar_view == "Overview":
             - Regulatory identifier / alias discoverability gaps
             - Uneven retrieval in multi-entity comparative questions
             - Need for evidence-completeness checks before cross-bank ranking
-            - High Global Search latency and the need for caching / asynchronous execution
+            - Global Search remains compute-intensive and would benefit from caching / asynchronous execution at production scale
             - Importance of distinguishing safe abstention from retrieval failure
             """
         )
