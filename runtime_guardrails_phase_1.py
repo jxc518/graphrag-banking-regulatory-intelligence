@@ -9,29 +9,34 @@
 #
 #-----------------------------------------------------------------------------------
 
-# Priority	下一步	                                          原因
-# 1	        Unified pipeline	                              把三层变成真正系统
-# 2	        Real GraphRAG answer test	                      从 synthetic → real integration
-# 3	        Automatic citation detection	                 不再人工传 citations_present=True
-# 4	        Out-of-scope / abstention	                      测 hallucination prevention
-# 5	        Audit logging	                                  银行治理 / debugging / monitoring
-# 6	        Long-query / malformed-query	                  Input robustness
-# 7	        Indirect prompt injection in retrieved text	RAG   特有风险
-# 8	        Citation mismatch	citation存在但并不支持          claim
-# 9	        PII / sensitive banking data patterns	          更接近金融治理
-# 10	    False-positive tests	                          Guardrail不能误杀正常监管问题
+# Priority     Next Step                                          Reason
+# 1            Unified pipeline                                  Turn separate guardrail layers into one integrated runtime system
+# 2            Real GraphRAG answer test                          Move from synthetic testing to real integration
+# 3            Automatic citation detection                      Eliminate manually supplied citations_present=True
+# 4            Out-of-scope / abstention                         Test hallucination-prevention behavior
+# 5            Audit logging                                     Support banking governance, debugging, and monitoring
+# 6            Long-query / malformed-query                      Test input robustness
+# 7            Indirect prompt injection in retrieved text       Address RAG-specific retrieved-context risks
+# 8            Citation mismatch                                 Detect citations that exist but do not support the claim
+# 9            PII / sensitive banking data patterns             Strengthen financial-data governance
+# 10           False-positive tests                              Ensure normal regulatory questions are not incorrectly blocked
 
-# 现在开始 Step 11 — Runtime Guardrail Pipeline Integration。
-# 这一步的目标是：以后无论 Notebook、API 还是 Public Website，每一个真实用户 query 都走同一个 Guardrail runtime pipeline，而不是分别手工运行 Step 1–10。
-
-# 现在已经有各个独立组件，所以 Step 11 不要重新发明 Guardrail，而是把它们串起来。
-
-# 最终结构应当是：
+# Step 11 — Runtime Guardrail Pipeline Integration
+#
+# Objective:
+# Ensure that every real user query—whether from a notebook, API, or public
+# website—passes through the same runtime guardrail pipeline rather than
+# requiring Steps 1–10 to be executed manually and independently.
+#
+# The individual guardrail components already exist. Step 11 integrates
+# them into one unified runtime pipeline.
+#
+# Target architecture:
 
 # User Query
 #    ↓
 # [1] Input Guardrail
-#    │ BLOCK → 不运行 GraphRAG
+#    │ BLOCK → Do not run GraphRAG
 #    ↓
 # [2] Real GraphRAG Query
 #    │ Failure → BLOCK
@@ -57,11 +62,12 @@
 # Safe Answer / WARN / BLOCK
 
 
-# 第一步：在 Guardrails notebook 建立统一结果格式
+# Step 1: Establish a unified GuardrailResult format
+#
+# Create and run the first notebook cell to confirm there are no errors.
+#
+# Recommended function order
 
-# 在这个 notebook 新建第一个 cell, 运行确认没有 error。
-
-# 建议的函数顺序
 # 1. Imports
 # 2. Constants / paths
 
@@ -726,15 +732,16 @@ def run_graphrag_query(
             elapsed
     }
 
-# 但要注意一个现实问题：
-
-# GraphRAG/LLM 有时即使 out-of-scope，也可能凭预训练知识回答天气、人物等问题。
-
-# 所以 V4 里不要只依赖“citation 是否存在”。
-
-# 可以加一个domain scope heuristic。
-
-# 例如：
+# One practical issue requires special attention:
+#
+# GraphRAG/LLMs may sometimes answer out-of-scope questions using pretrained
+# knowledge, even when the indexed knowledge base does not contain supporting evidence.
+#
+# Therefore, Phase 1 should not rely solely on whether a citation exists.
+#
+# Add a domain-scope heuristic as an additional control.
+#
+# Example:
 
 
 #-----------------------------06. domain_scope_check----------------------------#
@@ -1759,7 +1766,7 @@ def parse_claims_with_citations(
 
 #-----------------------------18. get_entity_evidence----------------------------#
 
-# 接下来是最关键部分：自动根据 citation ID 找真正 evidence。
+# Key step: automatically retrieve the actual evidence associated with each citation ID.
 
 # ============================================================
 # HELPER 4 — FIND ENTITY EVIDENCE
@@ -1804,8 +1811,8 @@ def get_entity_evidence(
 
     return evidence
 
-# Reports 稍微复杂一点，因为不同 GraphRAG 版本 column 名可能不同，所以我让程序自动寻找 ID 字段。
-
+# Reports require slightly more flexible handling because GraphRAG versions may use
+# different column names. The implementation therefore detects the appropriate ID field automatically.
 
 #-----------------------------19. get_report_evidence----------------------------#
 
@@ -2756,7 +2763,7 @@ def load_graphrag_evidence_tables():
 
 #-----------------------------24. validate_real_graphrag_citations----------------------------#
     
-# 现在把所有步骤串起来。
+# Integrate all runtime guardrail stages into a single pipeline.
 
 # ============================================================
 # MAIN FUNCTION
@@ -3257,11 +3264,12 @@ def validate_real_graphrag_citations(
     
 ### Step 11 — Runtime Guardrail Pipeline Integration
 
-# Step 11A — 先建立 Citation Validation → GuardrailResult adapter
-
-# 现在的：validate_real_graphrag_citations() 返回的是 dictionary，而其他 Guardrail 大部分返回 GuardrailResult。
-
-# 所以先统一一下：
+# Step 11A — Build a Citation Validation → GuardrailResult adapter
+#
+# validate_real_graphrag_citations() currently returns a dictionary, while most
+# other guardrail components return GuardrailResult objects.
+#
+# Normalize the citation-validation output into the common GuardrailResult format.
 
 # ============================================================
 # STEP 11A — CITATION VALIDATION ADAPTER
@@ -3327,7 +3335,7 @@ def citation_validation_guardrail(
 
 # Step 11B — Final decision aggregator
 
-# 把所有 stage 的结果统一汇总。
+# Aggregate results from all guardrail stages into one unified runtime decision.
 
 # ============================================================
 # STEP 11B — FINAL DECISION AGGREGATOR
