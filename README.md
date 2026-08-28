@@ -1,4 +1,4 @@
-# Banking Regulatory Intelligence - GraphRAG Phase 1
+# Banking Regulatory Intelligence - GraphRAG Phase 1  
 
 A public portfolio proof-of-concept for evidence-grounded banking and regulatory research using Microsoft GraphRAG, citation validation, runtime guardrails, and auditable AI responses.
 
