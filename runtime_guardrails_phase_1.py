@@ -167,38 +167,26 @@ BASE_DIR = Path(__file__).resolve().parent
 # variable overrides it.
 # ------------------------------------------------------------
 
-DEFAULT_LOCAL_GRAPHRAG_ROOT = Path(
-    r"C:\Users\chen_\graphrag"
-)
+# ============================================================
+# GraphRAG project root configuration
+# ============================================================
 
-DEPLOYED_GRAPHRAG_ROOT = (
-    BASE_DIR
-    / "graphrag_project"
-)
+# Public/cloud deployment bundle stored inside this repository.
+DEFAULT_GRAPHRAG_ROOT = BASE_DIR / "graphrag_project_online"
 
+# Optional override for local development or alternate deployment.
+# Example:
+#   GRAPHRAG_ROOT_PATH=C:\path\to\your\graphrag_project
+ENV_GRAPHRAG_ROOT = os.getenv("GRAPHRAG_ROOT_PATH")
 
-environment_root = os.getenv(
-    "GRAPHRAG_ROOT_PATH"
-)
-
-
-if environment_root:
-
+if ENV_GRAPHRAG_ROOT:
     GRAPHRAG_ROOT = Path(
-        environment_root
-    )
-
-elif DEFAULT_LOCAL_GRAPHRAG_ROOT.exists():
-
-    GRAPHRAG_ROOT = (
-        DEFAULT_LOCAL_GRAPHRAG_ROOT
-    )
-
+        ENV_GRAPHRAG_ROOT
+    ).expanduser().resolve()
 else:
-
     GRAPHRAG_ROOT = (
-        DEPLOYED_GRAPHRAG_ROOT
-    )
+        DEFAULT_GRAPHRAG_ROOT
+    ).resolve()
 
 
 # ------------------------------------------------------------
@@ -593,8 +581,6 @@ def input_guardrail(
 # import subprocess
 # import time
 
-
-# GRAPHRAG_ROOT = r"C:\Users\chen_\graphrag"
 
 # ============================================================
 # 05. RUN REAL GRAPHRAG QUERY
