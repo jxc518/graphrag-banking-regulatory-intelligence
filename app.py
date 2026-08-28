@@ -7,12 +7,22 @@ from pathlib import Path
 import html
 import time
 
+import os
 import streamlit as st
 
 from runtime_guardrails_phase_1 import (
     run_runtime_guardrailed_graphrag,
 )
 
+# ============================================================
+# STREAMLIT CLOUD SECRET BRIDGE
+# ============================================================
+
+try:
+    if "GRAPHRAG_API_KEY" in st.secrets:
+        os.environ["GRAPHRAG_API_KEY"] = st.secrets["GRAPHRAG_API_KEY"]
+except Exception:
+    pass
 
 # ============================================================
 # PAGE CONFIG
@@ -779,9 +789,9 @@ with st.sidebar:
         f'<div class="sidebar-status">● Knowledge Base &nbsp; {KNOWLEDGE_BASE_SIZE} documents</div>',
         unsafe_allow_html=True,
     )
-
+    
     st.markdown(
-        '<div class="sidebar-status">● Search &nbsp; Local + Global</div>',
+        '<div class="sidebar-status">● Search &nbsp; Basic + Local + Global</div>',
         unsafe_allow_html=True,
     )
 
@@ -797,16 +807,22 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
+    st.markdown("**Basic Search**")
+    st.caption(
+        "Traditional RAG-style baseline for straightforward "
+        "document retrieval and question answering."
+    )
+
     st.markdown("**Local Search**")
     st.caption(
-        "Focused evidence retrieval for institutions, regulatory topics, "
+        "Graph-enhanced focused retrieval for institutions, regulatory topics, "
         "risk questions, and named entities."
     )
 
     st.markdown("**Global Search**")
     st.caption(
-        "Cross-document and community-level synthesis. "
-        "More compute-intensive than Local Search."
+        "Corpus-wide community-level synthesis for broader themes "
+        "and cross-document analysis."
     )
 
     st.divider()
@@ -852,7 +868,7 @@ hero_html = (
     f'<div class="developer-line">{APP_PHASE} • Developed by {DEVELOPER_NAME}</div>'
     f'<div class="capability-row">'
     f'<span class="capability-pill">{KNOWLEDGE_BASE_SIZE}-Document Knowledge Base</span>'
-    f'<span class="capability-pill">Local + Global Search</span>'
+    f'<span class="capability-pill">Basic + Local + Global Search</span>'
     f'<span class="capability-pill">Evidence Grounding</span>'
     f'<span class="capability-pill">Citation Validation</span>'
     f'<span class="capability-pill">Runtime Guardrails</span>'
@@ -983,9 +999,9 @@ if sidebar_view == "Overview":
                     '<strong>2. Input Guardrail</strong>'
                     '<span>Prompt-injection and unsafe-request screening</span>'
                 '</div>'
-                '<div class="architecture-step">'
+                '<div class="architecture-step">'                   
                     '<strong>3. GraphRAG Retrieval</strong>'
-                    '<span>Local focused retrieval or Global community synthesis</span>'
+                    '<span>Basic baseline, Local graph retrieval, or Global community synthesis</span>'
                 '</div>'
                 '<div class="architecture-step">'
                     '<strong>4. Evidence Validation</strong>'
@@ -1013,7 +1029,7 @@ if sidebar_view == "Overview":
         st.markdown(
             """
             - End-to-end Microsoft GraphRAG retrieval over banking and regulatory documents
-            - Local and Global search paths with evidence references
+            - Basic, Local, and Global search paths with evidence references
             - Citation validation and grounding checks
             - Prompt-injection defense with early termination
             - Sensitive-data and output controls
@@ -1041,11 +1057,11 @@ if sidebar_view == "Overview":
 
     st.markdown(
         """
-        <div class="live-demo-note">
+        <div class="live-demo-note">           
             <strong>Interactive demo note.</strong>
-            Local Search is the recommended live experience and typically completes much faster.
-            Global Search is intentionally available for architecture validation, but measured Phase 1
-            runs can take substantially longer because of community-level synthesis.
+            Basic Search provides a traditional RAG-style baseline, while Local Search adds
+            graph-enhanced focused retrieval. Global Search provides broader community-level
+            synthesis and can require substantially longer processing time.
         </div>
         """,
         unsafe_allow_html=True,
@@ -1084,11 +1100,11 @@ else:
     with top_right:
         st.markdown(
             """
-            <div class="live-demo-note">
+            <div class="live-demo-note">                
                 <strong>Live Research Workspace.</strong>
                 Ask a question from the indexed banking and regulatory knowledge base.
-                Local Search is recommended for interactive review; Global Search is substantially
-                more compute-intensive and may take much longer.
+                Choose Basic Search for a traditional RAG-style baseline, Local Search for
+                graph-enhanced focused retrieval, or Global Search for broader cross-document synthesis.
             </div>
             """,
             unsafe_allow_html=True,
@@ -1104,8 +1120,9 @@ else:
         <div class="section-title">Ask a banking or regulatory question</div>
         <div class="section-copy">
             Select the retrieval strategy that best matches the analytical task.
-            Local Search is optimized for focused evidence; Global Search is designed
-            for broader synthesis across the knowledge base.
+            Basic Search provides a fast traditional RAG-style baseline,
+            Local Search adds graph-enhanced focused retrieval, and Global Search
+            performs broader synthesis across the knowledge base.
         </div>
         """,
         unsafe_allow_html=True,
@@ -1117,6 +1134,7 @@ else:
         search_method = st.radio(
             "Search Strategy",
             [
+                "Basic Search",
                 "Local Search",
                 "Global Search",
             ],
@@ -1126,17 +1144,30 @@ else:
         )
 
     with col_scope:
-        if search_method == "Local Search":
+        if search_method == "Basic Search":
             st.markdown(
                 """
                 <div class="mode-note">
-                    <strong>Focused retrieval.</strong>
+                    <strong>Traditional RAG-style baseline.</strong>
+                    Best for straightforward document questions that benefit from
+                    fast semantic retrieval without graph-based community synthesis.
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        elif search_method == "Local Search":
+            st.markdown(
+                """
+                <div class="mode-note">
+                    <strong>Graph-enhanced focused retrieval.</strong>
                     Best for named institutions, risk topics, regulatory guidance,
                     and questions that should be answered from targeted graph evidence.
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
+
         else:
             st.markdown(
                 """
@@ -1151,12 +1182,32 @@ else:
             )
 
     method_map = {
+        "Basic Search": "basic",
         "Local Search": "local",
         "Global Search": "global",
     }
 
     selected_method = method_map[search_method]
 
+    # ========================================================
+    # PUBLIC DEMO COST / ABUSE CONTROLS
+    # ========================================================
+
+    MAX_QUERY_CHARS = 500
+    MAX_STANDARD_RUNS_PER_SESSION = 10
+    MAX_GLOBAL_RUNS_PER_SESSION = 2
+    GLOBAL_COOLDOWN_SECONDS = 600  # 10 minutes
+
+    if "standard_run_count" not in st.session_state:
+        st.session_state["standard_run_count"] = 0
+
+    if "global_run_count" not in st.session_state:
+        st.session_state["global_run_count"] = 0
+
+    if "last_global_run_time" not in st.session_state:
+        st.session_state["last_global_run_time"] = None
+        
+        
     sample_questions = {
         "Select an example...": "",
         "Citigroup Overview":
@@ -1207,25 +1258,112 @@ else:
         if not user_query.strip():
             st.warning("Please enter a question.")
             st.stop()
+            
+    if run_query:
+        cleaned_query = user_query.strip()
 
-        progress_message = (
-            "Running Local Search..."
-            if selected_method == "local"
-            else
-            "Running Global Search. "
-            "This broader analysis may take considerably longer..."
-        )
+        # ----------------------------------------------------
+        # Input validation
+        # ----------------------------------------------------
+
+        if len(cleaned_query) > MAX_QUERY_CHARS:
+            st.warning(
+                f"Public demo questions are limited to "
+                f"{MAX_QUERY_CHARS} characters."
+            )
+            st.stop()
+
+        # ----------------------------------------------------
+        # Session-level usage controls
+        # ----------------------------------------------------
+
+        if selected_method in {"basic", "local"}:
+
+            if (
+                st.session_state["standard_run_count"]
+                >= MAX_STANDARD_RUNS_PER_SESSION
+            ):
+                st.warning(
+                    "This public demo allows up to "
+                    f"{MAX_STANDARD_RUNS_PER_SESSION} Basic/Local "
+                    "analyses per browser session."
+                )
+                st.stop()
+
+        elif selected_method == "global":
+
+            if (
+                st.session_state["global_run_count"]
+                >= MAX_GLOBAL_RUNS_PER_SESSION
+            ):
+                st.warning(
+                    "This public demo allows up to "
+                    f"{MAX_GLOBAL_RUNS_PER_SESSION} Global Search "
+                    "analyses per browser session."
+                )
+                st.stop()
+
+            last_global_run = st.session_state[
+                "last_global_run_time"
+            ]
+
+            if last_global_run is not None:
+
+                seconds_since_last_global = (
+                    time.time() - last_global_run
+                )
+
+                if (
+                    seconds_since_last_global
+                    < GLOBAL_COOLDOWN_SECONDS
+                ):
+                    remaining_minutes = (
+                        GLOBAL_COOLDOWN_SECONDS
+                        - seconds_since_last_global
+                    ) / 60
+
+                    st.warning(
+                        "Global Search is compute-intensive. "
+                        "Please wait approximately "
+                        f"{remaining_minutes:.1f} more minutes "
+                        "before running another Global Search."
+                    )
+                    st.stop()
+
+        if selected_method == "basic":
+            progress_message = (
+                "Running Basic Search..."
+            )
+
+        elif selected_method == "local":
+            progress_message = (
+                "Running Local Search..."
+            )
+
+        else:
+            progress_message = (
+                "Running Global Search... "
+                "This broader analysis may take considerably longer."
+            )
 
         with st.spinner(progress_message):
             try:
                 start = time.perf_counter()
-
+                
                 result = run_runtime_guardrailed_graphrag(
-                    query=user_query,
+                    query=cleaned_query,
                     method=selected_method,
                 )
 
                 ui_latency = time.perf_counter() - start
+                
+                                # Count only successfully completed executions.
+                if selected_method in {"basic", "local"}:
+                    st.session_state["standard_run_count"] += 1
+
+                elif selected_method == "global":
+                    st.session_state["global_run_count"] += 1
+                    st.session_state["last_global_run_time"] = time.time()
 
             except Exception as exc:
                 st.error(
@@ -1479,6 +1617,134 @@ else:
                 "around the runtime guardrail call. The pipeline metric above "
                 "is reported by the underlying runtime pipeline."
             )
+
+            citation_validation_raw = (
+                result.get("citation_validation_raw")
+                or {}
+            )
+
+            claim_details = (
+                citation_validation_raw.get("details")
+                or []
+            )
+
+            warned_claims = [
+                claim
+                for claim in claim_details
+                if claim.get("status") == "WARN"
+            ]
+
+            if warned_claims:
+
+                st.markdown("---")
+                st.markdown(
+                    "### Citation-Support Diagnostics"
+                )
+
+                st.caption(
+                    "Claims below did not meet the Phase 1 "
+                    "citation-support validation rule."
+                )
+
+                for claim_result in warned_claims:
+
+                    claim_number = claim_result.get(
+                        "claim_number",
+                        "?"
+                    )
+
+                    st.markdown(
+                        f"**Unsupported / Weakly Supported Claim "
+                        f"#{claim_number}**"
+                    )
+
+                    st.write(
+                        claim_result.get(
+                            "claim",
+                            ""
+                        )
+                    )
+
+                    d1, d2, d3, d4 = st.columns(4)
+
+                    d1.metric(
+                        "Support Ratio",
+                        f"{claim_result.get('support_ratio', 0):.3f}"
+                    )
+
+                    d2.metric(
+                        "Threshold",
+                        f"{claim_result.get('support_threshold', 0.35):.2f}"
+                    )
+
+                    d3.metric(
+                        "Numeric Support",
+                        str(
+                            claim_result.get(
+                                "numeric_support",
+                                False
+                            )
+                        )
+                    )
+
+                    d4.metric(
+                        "Evidence Items",
+                        claim_result.get(
+                            "evidence_count",
+                            0
+                        )
+                    )
+
+                    matched_keywords = (
+                        claim_result.get(
+                            "matched_keywords",
+                            []
+                        )
+                    )
+
+                    unmatched_keywords = (
+                        claim_result.get(
+                            "unmatched_keywords",
+                            []
+                        )
+                    )
+
+                    missing_numbers = (
+                        claim_result.get(
+                            "missing_numbers",
+                            []
+                        )
+                    )
+
+                    st.write(
+                        "**Matched keywords:**",
+                        ", ".join(matched_keywords)
+                        if matched_keywords
+                        else "None"
+                    )
+
+                    st.write(
+                        "**Unmatched keywords:**",
+                        ", ".join(unmatched_keywords)
+                        if unmatched_keywords
+                        else "None"
+                    )
+
+                    st.write(
+                        "**Missing numbers:**",
+                        ", ".join(
+                            str(x)
+                            for x in missing_numbers
+                        )
+                        if missing_numbers
+                        else "None"
+                    )
+
+                    st.caption(
+                        "Citation-support rule: "
+                        "support_ratio >= 0.35 "
+                        "AND numeric_support = True."
+                    )
 
 
 # ============================================================

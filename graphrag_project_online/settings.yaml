@@ -1,4 +1,4 @@
-﻿### This config file contains required core defaults that must be set, along with a handful of common optional settings.
+### This config file contains required core defaults that must be set, along with a handful of common optional settings.
 ### For a full list of available settings, see https://microsoft.github.io/graphrag/config/yaml/
 
 ### LLM settings ###
@@ -27,8 +27,8 @@ completion_models:
     rate_limit:
       type: sliding_window
       period_in_seconds: 60
-      tokens_per_period: 24000
-      requests_per_period: 8
+      tokens_per_period: 60000
+      requests_per_period: 20
 
 embedding_models:
   default_embedding_model:

@@ -602,6 +602,10 @@ def run_graphrag_query(
     Capture raw bytes first, then decode safely.
     """
 
+    # --------------------------------------------------------
+    # BUILD GRAPHRAG CLI COMMAND
+    # --------------------------------------------------------
+
     cmd = [
         "graphrag",
         "query",
@@ -609,8 +613,32 @@ def run_graphrag_query(
         str(GRAPHRAG_ROOT),
         "--method",
         method,
-        query
     ]
+
+    # --------------------------------------------------------
+    # GLOBAL SEARCH PERFORMANCE OPTIMIZATION
+    # --------------------------------------------------------
+    #
+    # Phase 1 benchmark:
+    #   Default community level 2 = 428 community reports.
+    #
+    # For Global Search:
+    #   - use level 1
+    #   - enable dynamic community selection
+    #
+    # Local / Basic / DRIFT searches remain unchanged.
+    # --------------------------------------------------------
+
+    if method.lower() == "global":
+
+        cmd.extend([
+            "--community-level",
+            "1",
+            "--dynamic-community-selection",
+        ])
+
+    # Query must remain the final positional CLI argument.
+    cmd.append(query)
 
     start = time.perf_counter()
 
@@ -628,7 +656,6 @@ def run_graphrag_query(
         time.perf_counter()
         - start
     )
-
 
     # --------------------------------------------------------
     # SAFE WINDOWS DECODING
@@ -652,7 +679,6 @@ def run_graphrag_query(
 
             pass
 
-
         # GraphRAG / Windows console output can contain
         # Windows-1252 curly quotes, apostrophes, etc.
         try:
@@ -665,13 +691,11 @@ def run_graphrag_query(
 
             pass
 
-
         # Final fallback only
         return raw_bytes.decode(
             "utf-8",
             errors="replace"
         )
-
 
     stdout_text = decode_cli_output(
         completed.stdout
@@ -680,7 +704,6 @@ def run_graphrag_query(
     stderr_text = decode_cli_output(
         completed.stderr
     )
-
 
     return {
 
@@ -702,7 +725,7 @@ def run_graphrag_query(
         "latency_seconds":
             elapsed
     }
-    
+
 # 但要注意一个现实问题：
 
 # GraphRAG/LLM 有时即使 out-of-scope，也可能凭预训练知识回答天气、人物等问题。
@@ -1436,11 +1459,41 @@ def extract_numbers(text: str):
     if text is None:
         return []
 
-    return re.findall(
-        r"\b\d+(?:\.\d+)?%?\b",
-        str(text)
+    text = str(text)
+
+    # --------------------------------------------------------
+    # Ignore structural enumeration markers.
+    #
+    # Examples intentionally excluded:
+    # (1) first reason
+    # (2) second reason
+    # 1. first item
+    # 2. second item
+    #
+    # These are formatting / list markers rather than
+    # substantive numeric claims.
+    # --------------------------------------------------------
+
+    cleaned_text = re.sub(
+        r"(?<!\w)\(\d+\)(?=\s)",
+        " ",
+        text
     )
 
+    cleaned_text = re.sub(
+        r"(?m)^\s*\d+\.\s+",
+        " ",
+        cleaned_text
+    )
+
+    # --------------------------------------------------------
+    # Extract substantive numeric values.
+    # --------------------------------------------------------
+
+    return re.findall(
+        r"\b\d+(?:\.\d+)?%?\b",
+        cleaned_text
+    )
 
 #-----------------------------16. numeric_citation_check----------------------------#
 
@@ -2174,6 +2227,11 @@ def evaluate_claim_support(
         for word in claim_words
         if word in evidence_n
     ]
+    
+    unmatched_words = [
+        word
+        for word in claim_words
+        if word not in evidence_n ]
 
     support_ratio = (
         len(matched_words)
@@ -2201,11 +2259,14 @@ def evaluate_claim_support(
     )
 
     # V4 heuristic
+    # Phase 1 citation-support heuristic
+    support_threshold = 0.35
+
     supported = (
-        support_ratio >= 0.35
+        support_ratio >= support_threshold
         and numeric_support
     )
-
+    
     return {
         "supported":
             supported,
@@ -2216,8 +2277,14 @@ def evaluate_claim_support(
                 3
             ),
 
+        "support_threshold":
+            support_threshold,
+
         "matched_keywords":
             matched_words,
+
+        "unmatched_keywords":
+            unmatched_words,
 
         "claim_numbers":
             claim_numbers,
@@ -2966,11 +3033,17 @@ def validate_real_graphrag_citations(
             # ------------------------------------------------
             # SUPPORT METRICS
             # ------------------------------------------------
-
+            
             "support_ratio":
                 support[
                     "support_ratio"
                 ],
+
+            "support_threshold":
+                support.get(
+                    "support_threshold",
+                    0.35
+                ),
 
             "numeric_support":
                 support[
@@ -2985,6 +3058,12 @@ def validate_real_graphrag_citations(
             "matched_keywords":
                 support.get(
                     "matched_keywords",
+                    []
+                ),
+
+            "unmatched_keywords":
+                support.get(
+                    "unmatched_keywords",
                     []
                 ),
 
