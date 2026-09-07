@@ -38,7 +38,8 @@ architecture deployed on AWS for banking and regulatory intelligence.
 - GraphRAG Global Search validated for corpus-wide synthesis and exposed
   as an experimental capability in V1.
 
-### AWS V1 Architecture
+## AWS V1 Architecture
+
 ```text
 Browser
   ↓
