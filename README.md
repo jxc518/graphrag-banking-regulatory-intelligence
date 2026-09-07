@@ -4,13 +4,14 @@ A production-oriented AI engineering portfolio demonstrating the evolution from 
 
 ## 🚀 Phase 2 (AWS V1) — Governed Multi-Agent GraphRAG
 
-**Status:** DEPLOYED  
+**Status:** DEPLOYED — Phase 2 Complete (2026-09-07)  
 **Runtime:** LangGraph  
 **Cloud:** AWS ECS  
 **Primary LLM:** OpenAI GPT-4.1  
 **Secondary Provider:** DeepSeek  
 **Retrieval:** Microsoft GraphRAG  
 **Governance:** Guardrails + LLM Judge + Recovery / Human Review
+
 
 **Phase 2 status: COMPLETE (2026-09-07)**
 
