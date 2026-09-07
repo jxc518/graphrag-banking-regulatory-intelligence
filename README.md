@@ -70,7 +70,8 @@ Governed Answer
 The LangGraph runtime orchestrates planning, retrieval, research, deterministic guardrails, failure classification, recovery, retry/escalation, independent
 LLM judging, and final governed decisioning.
 
-<img width="463" height="1448" alt="GraphRAG_Phase3_Step03_GOVERNED_WORKFLOW_10_langgraph_topology" src="https://github.com/user-attachments/assets/37958cd0-18d0-415b-a301-27884217183c" />
+<img width="205" height="640" alt="image" src="https://github.com/user-attachments/assets/5de0c09b-5039-424a-ba4f-3a20b5fbc3cd" />
+
 
 
 
