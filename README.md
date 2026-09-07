@@ -66,6 +66,13 @@ Recovery / Escalation / Human Review
 Governed Answer
 ```
 
+### LangGraph Governed Multi-Agent Workflow
+The LangGraph runtime orchestrates planning, retrieval, research, deterministic guardrails, failure classification, recovery, retry/escalation, independent
+LLM judging, and final governed decisioning.
+
+<img width="463" height="1448" alt="GraphRAG_Phase3_Step03_GOVERNED_WORKFLOW_10_langgraph_topology" src="https://github.com/user-attachments/assets/37958cd0-18d0-415b-a301-27884217183c" />
+
+
 
 # Banking Regulatory Intelligence - GraphRAG Phase 1  
 
