@@ -64,7 +64,7 @@ LLM Judge
 Recovery / Escalation / Human Review
   ↓
 Governed Answer
-```text
+```
 
 
 # Banking Regulatory Intelligence - GraphRAG Phase 1  
