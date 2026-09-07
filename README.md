@@ -129,8 +129,6 @@ graph TD;
 
 > **Phase 1 — Historical Foundation:** Original Microsoft GraphRAG proof-of-concept that established the retrieval, evidence-grounding, citation-validation, and guardrail foundation later extended into the governed multi-agent AWS architecture above.
 
-# Banking Regulatory Intelligence - GraphRAG Phase 1  
-
 A public portfolio proof-of-concept for evidence-grounded banking and regulatory research using Microsoft GraphRAG, citation validation, runtime guardrails, and auditable AI responses.
 
 **Phase 1 status: COMPLETE (2026-08-28)**
