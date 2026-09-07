@@ -19,6 +19,7 @@ architecture deployed on AWS for banking and regulatory intelligence.
 ### Live Application
 
 **[Launch the AWS Governed Multi-Agent GraphRAG Demo](https://ji-6283b0637f924ce6848d5fc3fca854aa.ecs.us-east-1.on.aws)**
+** https://ji-6283b0637f924ce6848d5fc3fca854aa.ecs.us-east-1.on.aws/ **
 
 ### What AWS V1 Demonstrates
 
