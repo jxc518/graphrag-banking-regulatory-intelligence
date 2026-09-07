@@ -1,3 +1,69 @@
+# Governed Multi-Agent GraphRAG for Banking Regulatory Intelligence AWS V1
+
+A production-oriented AI engineering portfolio demonstrating the evolution
+from Microsoft GraphRAG retrieval into a governed LangGraph-based multi-agent
+architecture deployed on AWS for banking and regulatory intelligence.
+
+## 🚀 AWS V1 — Governed Multi-Agent GraphRAG
+
+**Status:** DEPLOYED  
+**Runtime:** LangGraph  
+**Cloud:** AWS ECS  
+**Primary LLM:** OpenAI GPT-4.1  
+**Secondary Provider:** DeepSeek  
+**Retrieval:** Microsoft GraphRAG  
+**Governance:** Guardrails + LLM Judge + Recovery / Human Review
+
+**Phase 2 status: COMPLETE (2026-09-07)**
+
+### Live Application
+
+**[Launch the AWS Governed Multi-Agent GraphRAG Demo](https://ji-6283b0637f924ce6848d5fc3fca854aa.ecs.us-east-1.on.aws)**
+
+### What AWS V1 Demonstrates
+
+- Governed LangGraph-based multi-agent orchestration.
+- Microsoft GraphRAG integration for banking and regulatory intelligence.
+- Specialized planning, research, evidence-validation, guardrail, judge,
+  recovery, and human-review workflow.
+- OpenAI GPT-4.1 primary model with DeepSeek secondary-provider architecture.
+- Evidence-grounded answers with explicit governance decisions.
+- Guardrail and independent LLM-judge evaluation.
+- Retry, recovery, escalation, and human-review controls.
+- Dockerized deployment through Amazon ECR and Amazon ECS.
+- Public FastAPI-based recruiter-facing AWS application.
+- Local Search validated end-to-end on AWS.
+- GraphRAG Global Search validated for corpus-wide synthesis and exposed
+  as an experimental capability in V1.
+
+### AWS V1 Architecture
+
+Browser
+   ↓
+AWS Public Application
+   ↓
+FastAPI
+   ↓
+LangGraph Governed Multi-Agent Runtime
+   ↓
+Planner / Research / Evidence Validation
+   ↓
+Microsoft GraphRAG
+   ↓
+Local Search / Experimental Global Search
+   ↓
+OpenAI GPT-4.1 + DeepSeek Secondary Provider
+   ↓
+Guardrails
+   ↓
+LLM Judge
+   ↓
+Recovery / Escalation / Human Review
+   ↓
+Governed Answer
+
+
+
 # Banking Regulatory Intelligence - GraphRAG Phase 1  
 
 A public portfolio proof-of-concept for evidence-grounded banking and regulatory research using Microsoft GraphRAG, citation validation, runtime guardrails, and auditable AI responses.
