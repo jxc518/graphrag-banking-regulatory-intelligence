@@ -1,10 +1,8 @@
-# Governed Multi-Agent GraphRAG for Banking Regulatory Intelligence AWS V1
+# Governed Multi-Agent GraphRAG for Banking Regulatory Intelligence — Phase 2 (AWS V1)
 
-A production-oriented AI engineering portfolio demonstrating the evolution
-from Microsoft GraphRAG retrieval into a governed LangGraph-based multi-agent
-architecture deployed on AWS for banking and regulatory intelligence.
+A production-oriented AI engineering portfolio demonstrating the evolution from Microsoft GraphRAG retrieval into a governed LangGraph-based multi-agent architecture deployed on AWS for banking and regulatory intelligence.
 
-## 🚀 AWS V1 — Governed Multi-Agent GraphRAG
+## 🚀 Phase 2 (AWS V1) — Governed Multi-Agent GraphRAG
 
 **Status:** DEPLOYED  
 **Runtime:** LangGraph  
