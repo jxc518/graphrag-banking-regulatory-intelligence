@@ -66,12 +66,61 @@ Recovery / Escalation / Human Review
 Governed Answer
 ```
 
+
 ### LangGraph Governed Multi-Agent Workflow
-The LangGraph runtime orchestrates planning, retrieval, research, deterministic guardrails, failure classification, recovery, retry/escalation, independent
-LLM judging, and final governed decisioning.
 
-<img width="463" height="1448" alt="GraphRAG_Phase3_Step03_GOVERNED_WORKFLOW_10_langgraph_topology" src="https://github.com/user-attachments/assets/28362571-6bd8-4130-8a95-58007fd51c3a" />
+The LangGraph runtime orchestrates planning, retrieval, research, deterministic guardrails, failure classification, recovery, retry/escalation, independent LLM judging, and final governed decisioning.
 
+```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+    __start__([<p>__start__</p>]):::first
+    planning(planning)
+    plan_guardrail(plan_guardrail)
+    retrieval(retrieval)
+    research(research)
+    deterministic_guard(deterministic_guard)
+    failure_classifier(failure_classifier)
+    recovery_controller(recovery_controller)
+    retry_matrix(retry_matrix)
+    retry_guard(retry_guard)
+    claim_level_fail_closed(claim_level_fail_closed)
+    judge_gate(judge_gate)
+    judge(judge)
+    judge_contract_guardrail(judge_contract_guardrail)
+    final_decision(final_decision)
+    __end__([<p>__end__</p>]):::last
+
+    __start__ --> planning;
+    planning --> plan_guardrail;
+    plan_guardrail --> retrieval;
+    retrieval --> research;
+    research --> deterministic_guard;
+    deterministic_guard --> failure_classifier;
+    failure_classifier --> recovery_controller;
+
+    recovery_controller -.-> claim_level_fail_closed;
+    recovery_controller -. &nbsp;continue_to_judge&nbsp; .-> judge_gate;
+    recovery_controller -.-> retry_matrix;
+    recovery_controller -. &nbsp;escalate&nbsp; .-> final_decision;
+
+    claim_level_fail_closed --> judge_gate;
+    retry_matrix --> retry_guard;
+    retry_guard --> judge_gate;
+
+    judge_gate --> judge;
+    judge --> judge_contract_guardrail;
+    judge_contract_guardrail --> final_decision;
+    final_decision --> __end__;
+
+    classDef default fill:#f2f0ff,line-height:1.2
+    classDef first fill-opacity:0
+    classDef last fill:#bfb6fc
+```
 
 
 # Banking Regulatory Intelligence - GraphRAG Phase 1  
