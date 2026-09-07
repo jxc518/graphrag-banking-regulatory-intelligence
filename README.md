@@ -12,9 +12,6 @@ A production-oriented AI engineering portfolio demonstrating the evolution from 
 **Retrieval:** Microsoft GraphRAG  
 **Governance:** Guardrails + LLM Judge + Recovery / Human Review
 
-
-**Phase 2 status: COMPLETE (2026-09-07)**
-
 ### Live Application
 
 **[Launch the AWS Governed Multi-Agent GraphRAG Demo](https://ji-6283b0637f924ce6848d5fc3fca854aa.ecs.us-east-1.on.aws)**  
