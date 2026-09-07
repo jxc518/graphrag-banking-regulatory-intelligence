@@ -39,29 +39,29 @@ architecture deployed on AWS for banking and regulatory intelligence.
   as an experimental capability in V1.
 
 ### AWS V1 Architecture
-
+```text
 Browser
-   ↓
+  ↓
 AWS Public Application
-   ↓
+  ↓
 FastAPI
-   ↓
+  ↓
 LangGraph Governed Multi-Agent Runtime
-   ↓
+  ↓
 Planner / Research / Evidence Validation
-   ↓
+  ↓
 Microsoft GraphRAG
-   ↓
+  ↓
 Local Search / Experimental Global Search
-   ↓
+  ↓
 OpenAI GPT-4.1 + DeepSeek Secondary Provider
-   ↓
+  ↓
 Guardrails
-   ↓
+  ↓
 LLM Judge
-   ↓
+  ↓
 Recovery / Escalation / Human Review
-   ↓
+  ↓
 Governed Answer
 
 
