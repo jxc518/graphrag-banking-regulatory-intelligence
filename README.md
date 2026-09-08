@@ -62,6 +62,8 @@ Recovery / Escalation / Human Review
 Governed Answer
 ```
 
+<img width="2000" height="870" alt="image" src="https://github.com/user-attachments/assets/f68be9e9-846a-47ca-b18c-e885cdd1a5e7" />
+
 
 ### LangGraph Governed Multi-Agent Workflow
 
