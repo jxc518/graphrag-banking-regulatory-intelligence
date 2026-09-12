@@ -36,7 +36,7 @@ A production-oriented AI engineering portfolio demonstrating the evolution from 
 
 ## AWS V1 Architecture
 
-...
+```text
 Browser / User
   ↓
 AWS Public Application
@@ -80,7 +80,9 @@ Recovery Controller
                                      Final Decision
                                           ↓
                                     Governed Answer
-'''
+```
+
+
 
 <img width="1904" height="826" alt="image" src="https://github.com/user-attachments/assets/f04824d9-8888-4f49-9eb8-5af0b7ab8da4" />
 
