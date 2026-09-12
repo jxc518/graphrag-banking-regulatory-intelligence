@@ -123,6 +123,10 @@ graph TD;
 ```
 
 
+<img width="780" height="2000" alt="image" src="https://github.com/user-attachments/assets/5729183a-9d2d-4052-8fa1-e4d52f830510" />
+
+
+
 ---
 
 # Banking Regulatory Intelligence - GraphRAG Phase 1
