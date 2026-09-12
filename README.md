@@ -36,31 +36,49 @@ A production-oriented AI engineering portfolio demonstrating the evolution from 
 
 ## AWS V1 Architecture
 
-```text
-Browser
+Browser / User
   ↓
 AWS Public Application
   ↓
-FastAPI
+FastAPI /query
   ↓
 LangGraph Governed Multi-Agent Runtime
   ↓
-Planner / Research / Evidence Validation
+Planning
   ↓
-Microsoft GraphRAG
+Input Guardrail
+  ↓
+Query Router
+  ↓
+GraphRAG Retrieval
   ↓
 Local Search / Experimental Global Search
   ↓
-OpenAI GPT-4.1 + DeepSeek Secondary Provider
+Research
   ↓
-Guardrails
+Evidence Synthesis
   ↓
-LLM Judge
+Provider Routing
   ↓
-Recovery / Escalation / Human Review
+OpenAI GPT-4.1 (Primary) / DeepSeek (Secondary)
   ↓
-Governed Answer
-```
+Deterministic Guard
+  ↓
+Failure Classifier
+  ↓
+Recovery Controller
+  ├── Retry Matrix → Retry Guard ─────────┐
+  ├── Claim-Level Fail-Closed ────────────┤
+  ├── Continue to Judge ──────────────────┤
+  └── Escalation / Human Review           │
+                                          ↓
+                                      Judge Gate
+                                          ↓
+                                    Output Guardrail
+                                          ↓
+                                     Final Decision
+                                          ↓
+                                    Governed Answer
 
 
 <img width="1904" height="826" alt="image" src="https://github.com/user-attachments/assets/f04824d9-8888-4f49-9eb8-5af0b7ab8da4" />
