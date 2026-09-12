@@ -4,7 +4,7 @@ A production-oriented AI engineering portfolio demonstrating the evolution from 
 
 ## 🚀 Phase 2 (AWS V1) — Governed Multi-Agent GraphRAG
 
-**Status:** DEPLOYED — Phase 2 Complete (2026-09-11)  
+**Status:** DEPLOYED — Phase 2 Complete (2026-09-12)  
 **Runtime:** LangGraph  
 **Cloud:** AWS ECS  
 **Primary LLM:** OpenAI GPT-4.1  
@@ -63,7 +63,8 @@ Governed Answer
 ```
 
 
-<img width="2000" height="781" alt="image" src="https://github.com/user-attachments/assets/72f5cf77-ea9d-4fe2-89f5-cdca4055be50" />
+<img width="1904" height="826" alt="image" src="https://github.com/user-attachments/assets/f04824d9-8888-4f49-9eb8-5af0b7ab8da4" />
+
 
 
 ### LangGraph Governed Multi-Agent Workflow
