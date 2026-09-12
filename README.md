@@ -78,53 +78,119 @@ config:
     curve: linear
 ---
 graph TD;
+
     __start__([<p>__start__</p>]):::first
+
     planning(planning)
-    plan_guardrail(plan_guardrail)
+    input_guardrail(input_guardrail)
+    query_router(query_router)
     retrieval(retrieval)
     research(research)
+    evidence_synthesis(evidence_synthesis)
     deterministic_guard(deterministic_guard)
     failure_classifier(failure_classifier)
     recovery_controller(recovery_controller)
+
     retry_matrix(retry_matrix)
     retry_guard(retry_guard)
     claim_level_fail_closed(claim_level_fail_closed)
+
     judge_gate(judge_gate)
-    judge(judge)
-    judge_contract_guardrail(judge_contract_guardrail)
+    output_guardrail(output_guardrail)
+
+    escalation_agent(escalation_agent)
+
     final_decision(final_decision)
+
     __end__([<p>__end__</p>]):::last
 
+
+    %% ==========================================
+    %% MAIN GOVERNED WORKFLOW
+    %% ==========================================
+
     __start__ --> planning;
-    planning --> plan_guardrail;
-    plan_guardrail --> retrieval;
+    planning --> input_guardrail;
+    input_guardrail --> query_router;
+    query_router --> retrieval;
     retrieval --> research;
-    research --> deterministic_guard;
+    research --> evidence_synthesis;
+    evidence_synthesis --> deterministic_guard;
     deterministic_guard --> failure_classifier;
     failure_classifier --> recovery_controller;
 
-    recovery_controller -.-> claim_level_fail_closed;
-    recovery_controller -. &nbsp;continue_to_judge&nbsp; .-> judge_gate;
-    recovery_controller -.-> retry_matrix;
-    recovery_controller -. &nbsp;escalate&nbsp; .-> final_decision;
 
-    claim_level_fail_closed --> judge_gate;
+    %% ==========================================
+    %% RECOVERY CONTROLLER ROUTING
+    %% ==========================================
+
+    recovery_controller -.-> claim_level_fail_closed;
+
+    recovery_controller
+        -. continue_to_judge .->
+        judge_gate;
+
+    recovery_controller -.-> retry_matrix;
+
+    recovery_controller
+        -. escalate .->
+        final_decision;
+
+
+    %% ==========================================
+    %% RETRY PATH
+    %% ==========================================
+
     retry_matrix --> retry_guard;
     retry_guard --> judge_gate;
 
-    judge_gate --> judge;
-    judge --> judge_contract_guardrail;
-    judge_contract_guardrail --> final_decision;
+
+    %% ==========================================
+    %% CLAIM-LEVEL FAIL-CLOSED PATH
+    %% ==========================================
+
+    claim_level_fail_closed --> judge_gate;
+
+
+    %% ==========================================
+    %% JUDGE / OUTPUT GOVERNANCE
+    %% ==========================================
+
+    judge_gate --> output_guardrail;
+    output_guardrail --> final_decision;
+
+
+    %% ==========================================
+    %% ESCALATION / HUMAN REVIEW LOOP
+    %% ==========================================
+
+    judge_gate
+        -.-> escalation_agent;
+
+    escalation_agent
+        -. "escalate & retry" .->
+        recovery_controller;
+
+    escalation_agent
+        -. "human review / notification" .->
+        final_decision;
+
+
+    %% ==========================================
+    %% FINAL RESPONSE
+    %% ==========================================
+
     final_decision --> __end__;
 
-    classDef default fill:#f2f0ff,line-height:1.2
-    classDef first fill-opacity:0
-    classDef last fill:#bfb6fc
+
+    %% ==========================================
+    %% STYLING
+    %% ==========================================
+
+    classDef default fill:#f2f0ff,stroke:#9b82ff,stroke-width:1px,line-height:1.2
+    classDef first fill:#ffffff,stroke:#9b82ff,stroke-width:1px
+    classDef last fill:#bfb6fc,stroke:#8d73ff,stroke-width:1px
 ```
-
-
-<img width="780" height="2000" alt="image" src="https://github.com/user-attachments/assets/5729183a-9d2d-4052-8fa1-e4d52f830510" />
-
 
 
 ---
