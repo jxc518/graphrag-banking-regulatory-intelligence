@@ -18,6 +18,11 @@ A production-oriented AI engineering portfolio demonstrating the evolution from 
 
 **AWS Public Endpoint:** https://ji-6283b0637f924ce6848d5fc3fca854aa.ecs.us-east-1.on.aws
 
+### 📊 Project Presentations
+
+- [Phase 1 — GraphRAG OpenAI PoC Presentation](GraphRAG_Phase1_OpenAI_PoC_Presentation.pptx)
+- [Phase 2 — Governed Multi-Agent GraphRAG AWS Presentation](GraphRAG_Phase2_MultiAgent_AWS_Presentation.pptx)
+
 ### What AWS V1 Demonstrates
 
 - Governed LangGraph-based multi-agent orchestration.
