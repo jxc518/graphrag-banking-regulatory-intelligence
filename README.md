@@ -20,8 +20,8 @@ A production-oriented AI engineering portfolio demonstrating the evolution from 
 
 ### 📊 Project Presentations
 
-- [Phase 1 — GraphRAG OpenAI PoC Presentation](GraphRAG_Phase1_OpenAI_PoC_Presentation.pptx)
-- [Phase 2 — Governed Multi-Agent GraphRAG AWS Presentation](GraphRAG_Phase2_MultiAgent_AWS_Presentation.pptx)
+- [Phase 1 — GraphRAG OpenAI PoC Presentation](https://github.com/jxc518/graphrag-banking-regulatory-intelligence/blob/main/GraphRAG_Phase1_OpenAI_PoC_summary_20260831.pdf)
+- [Phase 2 — Governed Multi-Agent GraphRAG AWS Presentation](https://github.com/jxc518/graphrag-banking-regulatory-intelligence/blob/main/GraphRAG_Phase2_MultiAgent_OpenAI_DeepSeek_PoC_summary_20260912.pdf)
 
 ### What AWS V1 Demonstrates
 
