@@ -217,8 +217,12 @@ graph TD;
     classDef last fill:#bfb6fc,stroke:#8d73ff,stroke-width:1px
 ```
 
+---
+Planning • Retrieval • Research • Knowledge • Guardrails • Judge • Retry/Escalation • Observability
+---
 
-<img width="2025" height="777" alt="AWS V1 3 Multi-Agent Workflow Diagram" src="https://github.com/user-attachments/assets/3285548b-94a6-4867-94ec-80e4f321d25b" />
+<img width="2014" height="820" alt="image" src="https://github.com/user-attachments/assets/22d6bb33-22cd-41f3-8bd0-aebf6ab8411b" />
+
 
 ---
 
