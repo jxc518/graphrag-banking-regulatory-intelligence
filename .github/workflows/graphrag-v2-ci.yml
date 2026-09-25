@@ -42,38 +42,39 @@ jobs:
 
       - name: Provider adapter deterministic test
         run: |
-          python v2/provider_routing/GraphRAG_Phase3_StepV2_06_PROVIDER_ADAPTER_02_test.py
+          python aws-v2-platform/provider_routing/GraphRAG_Phase3_StepV2_06_PROVIDER_ADAPTER_02_test.py
 
       - name: Provider resilience deterministic test
         run: |
-          python v2/resilience/GraphRAG_Phase3_StepV2_06_PROVIDER_RESILIENCE_02_test.py
+          python aws-v2-platform/resilience/GraphRAG_Phase3_StepV2_06_PROVIDER_RESILIENCE_02_test.py
 
       - name: Observability router test
         run: |
-          python v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_02_test.py v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_01_router.py ci_observability_router.json
+          python aws-v2-platform/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_02_test.py aws-v2-platform/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_01_router.py ci_observability_router.json
 
       - name: CloudWatch serialization test
         run: |
-          python v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_04_cloudwatch_test.py v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_01_router.py v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_03_cloudwatch_json.py ci_cloudwatch.json
+          python aws-v2-platform/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_04_cloudwatch_test.py aws-v2-platform/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_01_router.py aws-v2-platform/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_03_cloudwatch_json.py ci_cloudwatch.json
 
       - name: Resilience observability test
         run: |
-          python v2/observability/GraphRAG_Phase3_StepV2_06_RESILIENCE_OBSERVABILITY_03_test.py v2/observability/GraphRAG_Phase3_StepV2_06_RESILIENCE_OBSERVABILITY_02_event_emitter.py v2/resilience/GraphRAG_Phase3_StepV2_06_PROVIDER_RESILIENCE_01_wrapper.py v2/observability/GraphRAG_Phase3_StepV2_06_RESILIENCE_OBSERVABILITY_01_event_schema.json
+          python aws-v2-platform/observability/GraphRAG_Phase3_StepV2_06_RESILIENCE_OBSERVABILITY_03_test.py aws-v2-platform/observability/GraphRAG_Phase3_StepV2_06_RESILIENCE_OBSERVABILITY_02_event_emitter.py aws-v2-platform/resilience/GraphRAG_Phase3_StepV2_06_PROVIDER_RESILIENCE_01_wrapper.py aws-v2-platform/observability/GraphRAG_Phase3_StepV2_06_RESILIENCE_OBSERVABILITY_01_event_schema.json
 
       - name: Governance adapter test
         run: |
-          python v2/governance/GraphRAG_Phase3_StepV2_08_GOVERNANCE_ADAPTER_02_test.py
+          python aws-v2-platform/governance/GraphRAG_Phase3_StepV2_08_GOVERNANCE_ADAPTER_02_test.py
 
       - name: Governance metrics engine test
         run: |
-          python v2/governance/GraphRAG_Phase3_StepV2_08_METRICS_ENGINE_02_test.py
+          python aws-v2-platform/governance/GraphRAG_Phase3_StepV2_08_METRICS_ENGINE_02_test.py
 
       - name: Governance record adapter test
         run: |
-          python v2/governance/GraphRAG_Phase3_StepV2_08_RECORD_ADAPTER_02_test.py
+          python aws-v2-platform/governance/GraphRAG_Phase3_StepV2_08_RECORD_ADAPTER_02_test.py
 
       - name: Governance metrics integration test
         run: |
-          python v2/governance/GraphRAG_Phase3_StepV2_08_METRICS_INTEGRATION_01_test.py
+          python aws-v2-platform/governance/GraphRAG_Phase3_StepV2_08_METRICS_INTEGRATION_01_test.py
+
 
 
