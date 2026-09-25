@@ -1,0 +1,41 @@
+﻿{
+    "step":  "STEP V2-06F",
+    "architecture":  {
+                         "resilience_wrapper":  "STEP V2-06E validated wrapper",
+                         "adapter_contract":  {
+                                                  "input":  [
+                                                                "provider",
+                                                                "request/messages",
+                                                                "existing provider transport"
+                                                            ],
+                                                  "output":  [
+                                                                 "provider",
+                                                                 "normalized result",
+                                                                 "normalized transport exception"
+                                                             ]
+                                              }
+                     },
+    "openai":  {
+                   "transport":  "existing engine.model.completion_async",
+                   "retry_owner":  "ProviderResilienceWrapper"
+               },
+    "deepseek":  {
+                     "transport":  "existing DeepSeek /chat/completions",
+                     "retry_owner":  "ProviderResilienceWrapper"
+                 },
+    "boundaries":  {
+                       "governance":  "guardrail/judge/RETRY_MATRIX",
+                       "resilience":  "retry/backoff/fallback/fail-closed",
+                       "adapter":  "provider-specific transport normalization"
+                   },
+    "source":  {
+                   "sha256":  "F4DFD380D3408FD3EE5F4F97FB2340489BCD6C96E1E62BAA4BF2A6061672F113",
+                   "file":  ".\\app\\GraphRAG_Phase3_Step04_RUNTIME_INTEGRATION_06_live_research_graph.py"
+               },
+    "safety":  {
+                   "v13_modified":  false,
+                   "real_api_call":  false,
+                   "rev24_modified":  false,
+                   "aws_modified":  false
+               }
+}

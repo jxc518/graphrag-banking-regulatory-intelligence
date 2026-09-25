@@ -1,0 +1,28 @@
+{
+    "phase":  "AWS V2",
+    "development_strategy":  "ADDITIVE_ONLY",
+    "frozen_baseline":  "AWS V1.3",
+    "frozen_task_revision":  24,
+    "frozen_image_tag":  "aws-v1.3-globaltrace-20260911",
+    "frozen_image_digest":  "sha256:414a315e556eeee1fbb7fff1c9d5ec4af15b47d2a7902af997f6c27891c276fe",
+    "frozen_langsmith_project":  "GraphRAG-Phase3-AWS-V1.3",
+    "modify_v13_source":  false,
+    "modify_v13_retrieval":  false,
+    "modify_v13_guardrail":  false,
+    "modify_v13_judge":  false,
+    "modify_v13_langgraph":  false,
+    "modify_v13_global_search":  false,
+    "v2_capabilities":  [
+                            "ECS_SCALABILITY",
+                            "PROVIDER_ROUTING",
+                            "RETRY",
+                            "FALLBACK",
+                            "FAILURE_RECOVERY",
+                            "ASYNC_GLOBAL_SEARCH",
+                            "CLOUDWATCH_OBSERVABILITY",
+                            "LANGSMITH_OBSERVABILITY",
+                            "DATABRICKS_TELEMETRY",
+                            "CI_CD"
+                        ],
+    "created_at":  "2026-09-14T16:31:49.4162389-04:00"
+}

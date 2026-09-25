@@ -1,0 +1,47 @@
+﻿{
+    "test_name":  "AWS V2 Controlled ECS Auto Scaling Validation",
+    "purpose":  [
+                    "Validate current Express Mode target-tracking scaling",
+                    "Observe task scale-out under controlled load",
+                    "Measure latency and HTTP error rate",
+                    "Observe scale-in after workload ends"
+                ],
+    "frozen_scaling":  {
+                           "min_capacity":  1,
+                           "max_capacity":  5,
+                           "policy_type":  "TargetTrackingScaling",
+                           "target_value":  60.0,
+                           "metric_type":  "ECSServiceAverageCPUUtilization"
+                       },
+    "expected_sequence":  [
+                              "Baseline: 1 running ECS task",
+                              "Generate controlled concurrent API workload",
+                              "CPU utilization increases",
+                              "Target tracking alarm triggers",
+                              "DesiredCount changes from 1 to 2 or more",
+                              "New ECS task becomes healthy",
+                              "ALB distributes requests across healthy tasks",
+                              "Workload stops",
+                              "CPU utilization decreases",
+                              "Auto Scaling returns service toward MinCapacity=1"
+                          ],
+    "measurements":  [
+                         "ECS RunningTaskCount",
+                         "ECS DesiredCount",
+                         "CPUUtilization Average",
+                         "CPUUtilization Maximum",
+                         "Request latency",
+                         "HTTP success count",
+                         "HTTP error count",
+                         "Scaling activity timestamp",
+                         "Scale-out duration",
+                         "Scale-in duration"
+                     ],
+    "safety_rules":  [
+                         "Do not modify Rev24",
+                         "Do not modify V1.3 application code",
+                         "Do not modify scaling policy during baseline test",
+                         "Do not modify ALB timeout",
+                         "Stop load generation if sustained application errors occur"
+                     ]
+}

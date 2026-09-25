@@ -1,0 +1,163 @@
+{
+  "schema_name": "GraphRAGResilienceEvent",
+  "schema_version": "1.0",
+  "description": "Canonical V2 telemetry contract for provider resilience events.",
+  "required_fields": [
+    "schema_version",
+    "event_id",
+    "timestamp_utc",
+    "service",
+    "environment",
+    "query_id",
+    "trace_id",
+    "provider",
+    "attempt",
+    "event_type",
+    "retryable",
+    "fallback_used",
+    "recovered"
+  ],
+  "optional_fields": [
+    "error_type",
+    "message",
+    "latency_ms",
+    "primary_provider",
+    "fallback_provider",
+    "primary_attempts",
+    "fallback_attempts",
+    "final_provider",
+    "success",
+    "metadata"
+  ],
+  "field_definitions": {
+    "schema_version": {
+      "type": "string",
+      "description": "Telemetry schema version."
+    },
+    "event_id": {
+      "type": "string",
+      "description": "Unique identifier for one telemetry event."
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "description": "UTC ISO-8601 event timestamp."
+    },
+    "service": {
+      "type": "string",
+      "description": "Application or service emitting the event."
+    },
+    "environment": {
+      "type": "string",
+      "description": "Runtime environment such as local, test, or aws."
+    },
+    "query_id": {
+      "type": "string",
+      "description": "Identifier linking all events for one governed query."
+    },
+    "trace_id": {
+      "type": "string",
+      "description": "Distributed trace / LangSmith correlation identifier."
+    },
+    "provider": {
+      "type": "string",
+      "description": "Provider associated with this event."
+    },
+    "attempt": {
+      "type": "integer",
+      "description": "Provider attempt number."
+    },
+    "event_type": {
+      "type": "string",
+      "description": "Canonical resilience lifecycle event."
+    },
+    "retryable": {
+      "type": "boolean",
+      "description": "Whether this failure class permits retry."
+    },
+    "fallback_used": {
+      "type": "boolean",
+      "description": "Whether provider fallback has been activated."
+    },
+    "recovered": {
+      "type": "boolean",
+      "description": "Whether the workflow recovered after a prior failure."
+    },
+    "error_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Normalized provider or resilience error class."
+    },
+    "message": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Sanitized operational event message."
+    },
+    "latency_ms": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Measured event/provider latency in milliseconds."
+    },
+    "primary_provider": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fallback_provider": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "primary_attempts": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "fallback_attempts": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "final_provider": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "success": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "allowed_event_types": [
+    "ATTEMPT",
+    "SUCCESS",
+    "RETRYABLE_FAILURE",
+    "NON_RETRYABLE_FAILURE",
+    "UNCLASSIFIED_FAILURE",
+    "BACKOFF",
+    "FALLBACK_START",
+    "FALLBACK_FAILURE",
+    "RETRY_BUDGET_EXHAUSTED_NO_FALLBACK"
+  ],
+  "target_sinks": [
+    "structured_json_log",
+    "cloudwatch",
+    "langsmith",
+    "databricks_delta"
+  ]
+}

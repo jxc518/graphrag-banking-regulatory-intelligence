@@ -37,3 +37,33 @@ graphrag_project/
 
 # Keep production deployment bundle
 !graphrag_project_online/
+
+# ============================================================
+# AWS V2 source / runtime boundary
+# ============================================================
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+.env.*
+!.env.example
+*.log
+logs/
+outputs/
+results/
+.aws/
+.databrickscfg
+.ipynb_checkpoints/
+
+# V2 generated GraphRAG/runtime artifacts
+deployment/**/graphrag_index/
+deployment/**/graphrag_runtime/
+deployment/**/phase2_frozen/
+deployment/**/phase3/
+
+# Historical deployment snapshots / backups
+deployment/**/*BACKUP*
+deployment/**/*PRE_*
+deployment/**/*.bak*

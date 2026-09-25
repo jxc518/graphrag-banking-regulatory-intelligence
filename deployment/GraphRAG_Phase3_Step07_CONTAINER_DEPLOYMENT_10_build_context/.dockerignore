@@ -1,0 +1,13 @@
+﻿__pycache__
+*.pyc
+*.pyo
+*.pyd
+.git
+.gitignore
+.env
+.env.*
+*.log
+results
+*.bak
+*.before_*
+*_PRE_UI_*

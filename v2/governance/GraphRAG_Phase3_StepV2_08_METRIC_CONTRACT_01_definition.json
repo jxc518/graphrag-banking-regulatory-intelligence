@@ -1,0 +1,106 @@
+{
+    "schema_version":  "1.0",
+    "step":  "STEP V2-08C",
+    "purpose":  "Governance metric definition and computability contract",
+    "metric_count":  13,
+    "metrics":  [
+                    {
+                        "classification":  "DERIVABLE",
+                        "numerator":  "governed queries passing required guardrails",
+                        "metric":  "Guardrail Pass Rate",
+                        "source_signal":  "guardrail result/status",
+                        "denominator":  "total governed queries evaluated by required guardrails"
+                    },
+                    {
+                        "classification":  "DERIVABLE",
+                        "numerator":  "queries requiring at least one provider retry",
+                        "metric":  "Retry Rate",
+                        "source_signal":  "RETRYABLE_FAILURE / retry events",
+                        "denominator":  "total governed queries"
+                    },
+                    {
+                        "classification":  "DERIVABLE",
+                        "numerator":  "retried queries that subsequently recover",
+                        "metric":  "Retry Recovery Rate",
+                        "source_signal":  "retry + recovered/success",
+                        "denominator":  "queries requiring retry"
+                    },
+                    {
+                        "classification":  "DERIVABLE",
+                        "numerator":  "queries routed to escalation",
+                        "metric":  "Escalation Rate",
+                        "source_signal":  "escalation routing/status",
+                        "denominator":  "total governed queries"
+                    },
+                    {
+                        "classification":  "DERIVABLE",
+                        "numerator":  "queries failing minimum evidence requirement",
+                        "metric":  "Missing Evidence Rate",
+                        "source_signal":  "evidence_count / missing evidence state",
+                        "denominator":  "total governed queries requiring evidence"
+                    },
+                    {
+                        "classification":  "ADDITIVE_SIGNAL_REQUIRED",
+                        "numerator":  "queries with one or more unsupported or mismatched citations",
+                        "metric":  "Citation Mismatch Rate",
+                        "source_signal":  "canonical citation-support validation outcome",
+                        "denominator":  "queries containing citations"
+                    },
+                    {
+                        "classification":  "DERIVABLE",
+                        "numerator":  "queries failing provenance validation",
+                        "metric":  "Provenance Failure Rate",
+                        "source_signal":  "provenance validation/status",
+                        "denominator":  "queries requiring provenance validation"
+                    },
+                    {
+                        "classification":  "DERIVABLE",
+                        "numerator":  "queries containing one or more unknown spans",
+                        "metric":  "Unknown Span Rate",
+                        "source_signal":  "unknown_span diagnostic",
+                        "denominator":  "queries evaluated for span grounding"
+                    },
+                    {
+                        "classification":  "DERIVABLE",
+                        "numerator":  "provider responses failing expected schema or parse contract",
+                        "metric":  "Provider Schema Failure Rate",
+                        "source_signal":  "schema failure / JSON parse / provider adapter failure",
+                        "denominator":  "provider responses subject to structured schema validation"
+                    },
+                    {
+                        "classification":  "DERIVABLE",
+                        "numerator":  "Judge-executed queries rejected or requiring revision",
+                        "metric":  "Judge Rejection Rate",
+                        "source_signal":  "judge_verdict / judge_review / contract status",
+                        "denominator":  "queries actually executed by Judge"
+                    },
+                    {
+                        "classification":  "DERIVABLE_EVALUATION",
+                        "numerator":  "benchmark queries incorrectly rejected by guardrail",
+                        "metric":  "False Positive Guardrail Rate",
+                        "source_signal":  "guardrail outcome joined to labeled evaluation ground truth",
+                        "denominator":  "benchmark queries known to be valid/in-scope"
+                    },
+                    {
+                        "classification":  "DERIVABLE",
+                        "numerator":  "95th percentile of governed query latency_ms",
+                        "metric":  "P95 Latency",
+                        "source_signal":  "latency_ms",
+                        "denominator":  "N/A percentile statistic"
+                    },
+                    {
+                        "classification":  "ADDITIVE_SIGNAL_REQUIRED",
+                        "numerator":  "total attributable provider/LLM cost",
+                        "metric":  "Cost per Governed Query",
+                        "source_signal":  "request-level token usage and/or provider cost metadata",
+                        "denominator":  "total governed queries"
+                    }
+                ],
+    "safety":  {
+                   "aws_call":  false,
+                   "provider_call":  false,
+                   "production_source_modified":  false,
+                   "rev24_modified":  false,
+                   "v1_3_modified":  false
+               }
+}
