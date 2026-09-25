@@ -50,15 +50,15 @@ jobs:
 
       - name: Observability router test
         run: |
-          python v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_02_test.py
+          python v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_02_test.py v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_01_router.py ci_observability_router.json
 
       - name: CloudWatch serialization test
         run: |
-          python v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_04_cloudwatch_test.py
+          python v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_04_cloudwatch_test.py v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_01_router.py v2/observability/GraphRAG_Phase3_StepV2_06_OBSERVABILITY_SINKS_03_cloudwatch_json.py ci_cloudwatch.json
 
       - name: Resilience observability test
         run: |
-          python v2/observability/GraphRAG_Phase3_StepV2_06_RESILIENCE_OBSERVABILITY_03_test.py
+          python v2/observability/GraphRAG_Phase3_StepV2_06_RESILIENCE_OBSERVABILITY_03_test.py v2/observability/GraphRAG_Phase3_StepV2_06_RESILIENCE_OBSERVABILITY_02_event_emitter.py v2/resilience/GraphRAG_Phase3_StepV2_06_PROVIDER_RESILIENCE_01_wrapper.py v2/observability/GraphRAG_Phase3_StepV2_06_RESILIENCE_OBSERVABILITY_01_event_schema.json
 
       - name: Governance adapter test
         run: |
@@ -75,3 +75,5 @@ jobs:
       - name: Governance metrics integration test
         run: |
           python v2/governance/GraphRAG_Phase3_StepV2_08_METRICS_INTEGRATION_01_test.py
+
+
