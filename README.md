@@ -1,3 +1,264 @@
+# Governed Multi-Agent GraphRAG for Banking Regulatory Intelligence — Phase 4 (AWS V2)
+
+A production-oriented AI engineering portfolio demonstrating the evolution from Microsoft GraphRAG retrieval into a governed LangGraph-based multi-agent architecture deployed on AWS for banking and regulatory intelligence.
+
+## 🚀 Phase 4 (AWS V2) — Governed Multi-Agent GraphRAG
+
+**Status:** DEPLOYED — Phase 4 Complete (2026-09-27)  
+**Runtime:** LangGraph  
+**Cloud:** AWS ECS  
+**Primary LLM:** OpenAI GPT-4.1  
+**Secondary Provider:** DeepSeek  
+**Retrieval:** Microsoft GraphRAG  
+**Retrieval:** Databricks
+**Governance:** Guardrails + LLM Judge + Recovery / Human Review
+
+### Live Application
+
+**[Launch the AWS Governed Multi-Agent GraphRAG Demo](https://ji-6283b0637f924ce6848d5fc3fca854aa.ecs.us-east-1.on.aws)**  
+
+**AWS Public Endpoint:** https://ji-6283b0637f924ce6848d5fc3fca854aa.ecs.us-east-1.on.aws
+
+### 📊 Project Presentations
+
+- [Phase 1 — GraphRAG OpenAI PoC Presentation](https://github.com/jxc518/graphrag-banking-regulatory-intelligence/blob/main/GraphRAG_Phase1_OpenAI_PoC_summary_20260831.pdf)
+- [Phase 2 — Governed Multi-Agent GraphRAG AWS Presentation](https://github.com/jxc518/graphrag-banking-regulatory-intelligence/blob/main/GraphRAG_Phase2_MultiAgent_OpenAI_DeepSeek_PoC_summary_20260912.pdf)
+- [Phase 4 — Governed Multi-Agent GraphRAG on AWS & Databricks] https://github.com/jxc518/graphrag-banking-regulatory-intelligence/blob/main/GraphRAG_Phase4_MultiAgent_OpenAI_DeepSeek_PoC_summary_20260928.pdf
+
+### What AWS V2 Demonstrates
+
+- Governed LangGraph-based multi-agent orchestration for banking and regulatory intelligence.
+- Microsoft GraphRAG integration with Local Search and experimental Global Search capabilities.
+- Hybrid retrieval architecture combining the existing GraphRAG corpus with MCP-based current regulatory web retrieval.
+- Specialized planning, retrieval, research, evidence-synthesis, guardrail, judge, recovery, and human-review workflow.
+- OpenAI GPT-4.1 primary model with DeepSeek V4 Flash secondary-provider architecture.
+- Deterministic evidence, citation, provenance, and output guardrails before final response approval.
+- Independent LLM judge separated from deterministic governance controls.
+- Explicit failure classification, retry, recovery, claim-level fail-closed, escalation, and human-review paths.
+- Governed outcomes including APPROVED and PENDING_REVIEW, rather than forcing an answer when evidence is insufficient.
+- LangSmith end-to-end tracing for agent execution, routing, latency, guardrail, recovery, judge, and MCP outcomes.
+- Amazon CloudWatch logging and runtime monitoring.
+- Dockerized production-oriented deployment through Amazon ECR and Amazon ECS with a public FastAPI-based demonstration application.
+- Databricks Delta query-history persistence capturing provider, retrieval route, MCP usage, retry count, guard status, judge verdict, final status, latency, and timestamps.
+- End-to-end validation across AWS ECS → LangGraph → LangSmith → Databricks.
+- Local Search validated end-to-end on AWS for governed banking and regulatory queries.
+- MCP retrieval validated for current regulatory evidence; MCP-specific governance remains an identified hardening area where valid retrieved evidence may still be conservatively blocked.
+- GraphRAG Global Search validated for corpus-wide synthesis but retained as an experimental capability pending further latency, long-running execution, and production-control optimization.
+
+## AWS V2 Architecture
+
+```text
+Browser / User
+  ↓
+AWS Public Application
+  ↓
+FastAPI /query
+  ↓
+LangGraph Governed Multi-Agent Runtime
+  ↓
+Planning Agent
+  ↓
+Input / Plan Guardrail
+  ↓
+Query Router
+  ↓
+Hybrid Retrieval
+  ├── GraphRAG Local Search (Existing Corpus)
+  ├── MCP Retrieval (Current Regulatory Web)
+  └── GraphRAG Global Search (Experimental)
+  ↓
+Provider Routing
+  ├── OpenAI GPT-4.1 (Primary)
+  └── DeepSeek V4 Flash (Secondary)
+  ↓
+Research Agent
+  ↓
+Evidence Synthesis
+  ↓
+Deterministic Guard
+  ↓
+Failure Classifier
+  ↓
+Recovery Controller
+  ├── Retry Matrix → Retry Guard ─────────────┐
+  ├── Claim-Level Fail-Closed ────────────────┤
+  ├── Continue to Judge ──────────────────────┤
+  └── Escalation / Human Review               │
+                                              ↓
+                                          Judge Gate
+                                              ↓
+                                      Independent LLM Judge
+                                              ↓
+                                      Output Guardrail
+                                              ↓
+                                       Final Decision
+                                              ↓
+                                       Governed Answer
+                                              ↓
+                              Query-History Persistence
+                                              ↓
+                                     Databricks Delta
+
+
+Cross-Cutting Observability
+  ├── LangSmith
+  │     ├── Agent / LangGraph traces
+  │     ├── Routing and provider behavior
+  │     ├── MCP outcomes
+  │     ├── Guardrail / recovery / judge decisions
+  │     └── Latency and execution metadata
+  │
+  └── Amazon CloudWatch
+        ├── Application logs
+        ├── Runtime diagnostics
+        └── AWS operational monitoring
+
+
+AWS Production Runtime
+  └── Docker → Amazon ECR → Amazon ECS
+        ├── AWS Secrets Manager
+        ├── IAM / security controls
+        └── Public FastAPI application
+```
+
+
+<img width="2000" height="867" alt="image" src="https://github.com/user-attachments/assets/bc5de21c-3477-40c0-9bb8-53b194a99bd5" />
+
+
+### LangGraph Governed Multi-Agent Workflow
+
+The LangGraph runtime orchestrates planning, retrieval, research, deterministic guardrails, failure classification, recovery, retry/escalation, independent LLM judging, and final governed decisioning.
+
+```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+
+    __start__([<p>__start__</p>]):::first
+
+    planning(planning)
+    input_guardrail(input_guardrail)
+    query_router(query_router)
+    retrieval(retrieval)
+    research(research)
+    evidence_synthesis(evidence_synthesis)
+    deterministic_guard(deterministic_guard)
+    failure_classifier(failure_classifier)
+    recovery_controller(recovery_controller)
+
+    retry_matrix(retry_matrix)
+    retry_guard(retry_guard)
+    claim_level_fail_closed(claim_level_fail_closed)
+
+    judge_gate(judge_gate)
+    output_guardrail(output_guardrail)
+
+    escalation_agent(escalation_agent)
+
+    final_decision(final_decision)
+
+    __end__([<p>__end__</p>]):::last
+
+
+    %% ==========================================
+    %% MAIN GOVERNED WORKFLOW
+    %% ==========================================
+
+    __start__ --> planning;
+    planning --> input_guardrail;
+    input_guardrail --> query_router;
+    query_router --> retrieval;
+    retrieval --> research;
+    research --> evidence_synthesis;
+    evidence_synthesis --> deterministic_guard;
+    deterministic_guard --> failure_classifier;
+    failure_classifier --> recovery_controller;
+
+
+    %% ==========================================
+    %% RECOVERY CONTROLLER ROUTING
+    %% ==========================================
+
+    recovery_controller -.-> claim_level_fail_closed;
+
+    recovery_controller
+        -. continue_to_judge .->
+        judge_gate;
+
+    recovery_controller -.-> retry_matrix;
+
+    recovery_controller
+        -. escalate .->
+        final_decision;
+
+
+    %% ==========================================
+    %% RETRY PATH
+    %% ==========================================
+
+    retry_matrix --> retry_guard;
+    retry_guard --> judge_gate;
+
+
+    %% ==========================================
+    %% CLAIM-LEVEL FAIL-CLOSED PATH
+    %% ==========================================
+
+    claim_level_fail_closed --> judge_gate;
+
+
+    %% ==========================================
+    %% JUDGE / OUTPUT GOVERNANCE
+    %% ==========================================
+
+    judge_gate --> output_guardrail;
+    output_guardrail --> final_decision;
+
+
+    %% ==========================================
+    %% ESCALATION / HUMAN REVIEW LOOP
+    %% ==========================================
+
+    judge_gate
+        -.-> escalation_agent;
+
+    escalation_agent
+        -. "escalate & retry" .->
+        recovery_controller;
+
+    escalation_agent
+        -. "human review / notification" .->
+        final_decision;
+
+
+    %% ==========================================
+    %% FINAL RESPONSE
+    %% ==========================================
+
+    final_decision --> __end__;
+
+
+    %% ==========================================
+    %% STYLING
+    %% ==========================================
+
+    classDef default fill:#f2f0ff,stroke:#9b82ff,stroke-width:1px,line-height:1.2
+    classDef first fill:#ffffff,stroke:#9b82ff,stroke-width:1px
+    classDef last fill:#bfb6fc,stroke:#8d73ff,stroke-width:1px
+```
+
+---
+Planning • Retrieval • Research • Knowledge • Guardrails • Judge • Retry/Escalation • Observability
+---
+
+<img width="2014" height="820" alt="image" src="https://github.com/user-attachments/assets/22d6bb33-22cd-41f3-8bd0-aebf6ab8411b" />
+
+
+---
+
 # Governed Multi-Agent GraphRAG for Banking Regulatory Intelligence — Phase 2 (AWS V1)
 
 A production-oriented AI engineering portfolio demonstrating the evolution from Microsoft GraphRAG retrieval into a governed LangGraph-based multi-agent architecture deployed on AWS for banking and regulatory intelligence.
