@@ -8,10 +8,11 @@ A production-oriented AI engineering portfolio demonstrating the evolution from 
 **Runtime:** LangGraph  
 **Cloud:** AWS ECS  
 **Primary LLM:** OpenAI GPT-4.1  
-**Secondary Provider:** DeepSeek  
-**Retrieval:** Microsoft GraphRAG  
-**Retrieval:** Databricks
+**Secondary LLM:** DeepSeek V4 Flash
+**Retrieval:** Microsoft GraphRAG + MCP
+**Persistence & Analytics:** Databricks Delta
 **Governance:** Guardrails + LLM Judge + Recovery / Human Review
+
 
 ### Live Application
 
@@ -28,22 +29,15 @@ A production-oriented AI engineering portfolio demonstrating the evolution from 
 ### What AWS V2 Demonstrates
 
 - Governed LangGraph-based multi-agent orchestration for banking and regulatory intelligence.
-- Microsoft GraphRAG integration with Local Search and experimental Global Search capabilities.
-- Hybrid retrieval architecture combining the existing GraphRAG corpus with MCP-based current regulatory web retrieval.
-- Specialized planning, retrieval, research, evidence-synthesis, guardrail, judge, recovery, and human-review workflow.
-- OpenAI GPT-4.1 primary model with DeepSeek V4 Flash secondary-provider architecture.
-- Deterministic evidence, citation, provenance, and output guardrails before final response approval.
-- Independent LLM judge separated from deterministic governance controls.
+- Hybrid retrieval combining Microsoft GraphRAG Local Search, MCP-based current regulatory web retrieval, and experimental Global Search.
+- Multi-provider LLM architecture using OpenAI GPT-4.1 and DeepSeek V4 Flash.
+- Layered governance with deterministic guardrails, evidence/provenance validation, independent LLM judging, and governed final decisions.
 - Explicit failure classification, retry, recovery, claim-level fail-closed, escalation, and human-review paths.
-- Governed outcomes including APPROVED and PENDING_REVIEW, rather than forcing an answer when evidence is insufficient.
-- LangSmith end-to-end tracing for agent execution, routing, latency, guardrail, recovery, judge, and MCP outcomes.
-- Amazon CloudWatch logging and runtime monitoring.
-- Dockerized production-oriented deployment through Amazon ECR and Amazon ECS with a public FastAPI-based demonstration application.
-- Databricks Delta query-history persistence capturing provider, retrieval route, MCP usage, retry count, guard status, judge verdict, final status, latency, and timestamps.
-- End-to-end validation across AWS ECS → LangGraph → LangSmith → Databricks.
-- Local Search validated end-to-end on AWS for governed banking and regulatory queries.
-- MCP retrieval validated for current regulatory evidence; MCP-specific governance remains an identified hardening area where valid retrieved evidence may still be conservatively blocked.
-- GraphRAG Global Search validated for corpus-wide synthesis but retained as an experimental capability pending further latency, long-running execution, and production-control optimization.
+- End-to-end observability through LangSmith tracing and Amazon CloudWatch monitoring.
+- Production-oriented deployment using Docker, Amazon ECR, Amazon ECS, FastAPI, IAM, and AWS Secrets Manager.
+- Databricks Delta persistence for governed query history, runtime outcomes, and operational analytics.
+- End-to-end validation across AWS ECS → LangGraph → LangSmith → Databricks, with MCP governance and Global Search optimization identified as next-stage hardening areas.
+
 
 ## AWS V2 Architecture
 
